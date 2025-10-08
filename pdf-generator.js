@@ -4,7 +4,6 @@
  * @author Santiago
  * @version 2.2
  * @license MIT
- * @created 2024-01-15
  * @modified 2025-10-08
  */
 

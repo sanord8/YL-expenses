@@ -14,24 +14,6 @@ This is a **completely free, offline-capable web app** that helps YoungLife volu
 
 **Best part?** Your data never leaves your device. Everything is stored locally in your browser - no servers, no tracking, no accounts needed!
 
-## 🚀 How to Use It?
-
-### Online (Easiest!)
-
-Just visit the deployed website and you're ready to go! After your first visit, it'll work even without internet.
-
-### Want to Host It Yourself?
-
-Super easy! You can deploy it to GitHub Pages for free:
-
-1. Fork or download this repository
-2. Upload all files to a new GitHub repository
-3. Go to Settings → Pages → Enable GitHub Pages
-4. Visit your URL: `https://yourusername.github.io/repository-name/`
-5. That's it! 🎉
-
-**Or just open `index.html` in your browser** - it works locally too!
-
 ### Using the App
 
 1. **Login**: Use password (you only need to do this once) (honestly we could remove this, but its john316) it's just to prevent bot traffic.
