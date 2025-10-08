@@ -244,7 +244,6 @@ function generatePDF() {
         doc.setTextColor(153, 153, 153);
         doc.setFont(undefined, 'normal');
         doc.text(`Generated with YoungLife Expense Generator v2.0 - Page ${i} of ${pageCount}`, 15, 285);
-        doc.text('Developed by Santiago', 165, 285);
     }
 
     doc.save(filename);

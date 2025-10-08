@@ -61,7 +61,4 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ## 🙏 Credits
 
-Built with love (and some autistic tendencies) by **Santi** for the YoungLife community.
----
-
 **Remember:** This is a community tool, consider supporting YoungLife's mission at [younglife.org](https://younglife.org)!
