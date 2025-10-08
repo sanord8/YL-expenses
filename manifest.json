@@ -1,0 +1,35 @@
+{
+  "name": "YoungLife Expense Report Generator",
+  "short_name": "YL Expenses",
+  "description": "Create professional expense reports with receipts for YoungLife",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#003a5b",
+  "theme_color": "#003a5b",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "young-life-5.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "productivity", "business"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Add Expense",
+      "short_name": "Add",
+      "description": "Add a new expense",
+      "url": "/index.html#add-expense"
+    },
+    {
+      "name": "Upload Receipt",
+      "short_name": "Upload",
+      "description": "Upload receipt images",
+      "url": "/index.html#upload-receipt"
+    }
+  ],
+  "prefer_related_applications": false
+}
