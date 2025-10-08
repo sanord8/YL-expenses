@@ -1,45 +1,38 @@
 # YoungLife Expense Report Generator
 
-This is a simple, free tool created for the amazing folks at **[YoungLife](https://younglife.org)** - a nonprofit organization dedicated to introducing adolescents to Jesus Christ and helping them grow in their faith.
+A free, offline-capable web application for generating professional PDF expense reports with receipt attachments. Created for **[YoungLife](https://younglife.org)** volunteers and staff.
 
-## What is this?
+## Overview
 
-Ever had to submit expense reports after a YoungLife camp, mission trip, or event? collecting receipts, organizing everything, and creating a proper report can be a pain. That's why this tool exists!
+This tool simplifies expense report submission for YoungLife camps, mission trips, and events. Track expenses and kilometers, upload receipt photos, and generate branded PDFs - all without an internet connection.
 
-This is a **completely free, offline-capable web app** that helps YoungLife volunteers and staff create PDF expense reports in seconds. 
+**Privacy:** Your data never leaves your device. Everything is stored locally in your browser.
 
-## Who can use this?
+## Quick Start
 
-**Everyone!** This project is completely free and open source. While it was created specifically for YoungLife, anyone in nonprofit work or who needs to track expenses can use it. It's licensed under the MIT License (see [LICENSE](LICENSE)), which means you can use it, modify it, share it, whatever you need!
-
-**Best part?** Your data never leaves your device. Everything is stored locally in your browser - no servers, no tracking, no accounts needed!
-
-### Using the App
-
-1. **Login**: Use password (you only need to do this once) (honestly we could remove this, but its john316) it's just to prevent bot traffic.
-2. **Set Your Profile**: Add your name and area (used for PDF filenames)
-3. **Add Expenses**: Click "Add Expense," fill in the details, choose a category
-4. **Add Receipts**: Upload photos or take pictures with your phone's camera
-5. **Generate PDF**: Click the big green button and download your report!
-
-**Pro tip:** The app remembers everything locally, so you can work on your report over several days if needed!
+1. **Login**: Enter password (you can change your hash i'm not sharing mine)
+2. **Profile**: Enter your name and select your area
+3. **Add Expenses**: Choose department, enter amount and description
+4. **Add KM**: Track driving separately with kilometers
+5. **Upload Receipts**: Use camera or upload images
+6. **Generate PDF**: Download your complete report
 
 
-## 🛠️ For Developers
 
-Want to customize this for your organization? Go for it! Here's what you need to know:
+## Technical Details
 
 ### Tech Stack
-- Pure HTML/CSS/JavaScript (no build tools needed!)
+- Pure HTML/CSS/JavaScript (no build tools)
 - Tailwind CSS for styling
 - jsPDF for PDF generation
 - Service Workers for offline support
 - LocalStorage for data persistence
 
-### Customization Ideas
-- Modify the driving rate in `app.js` (line 134)
-- Add more languages in `i18n.js`
+### Customization
+- Modify KM rate in `app.js` (0.26€/km)
+- Add translations in `i18n.js`
 - Change colors in `index.html` Tailwind config
+- Update department list or area codes as needed
 
 ### File Structure
 ```
@@ -48,17 +41,19 @@ Want to customize this for your organization? Go for it! Here's what you need to
 ├── app.js              # Core functionality
 ├── i18n.js             # Translations (EN/ES/CA)
 ├── pdf-generator.js    # PDF creation logic
-├── sw.js               # Service worker (offline support)
+├── sw.js               # Service worker
 ├── manifest.json       # PWA configuration
-└── young-life-5.svg    # YoungLife logo
+└── LICENSE             # MIT License
 ```
 
-## 📝 License
+## License
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
-**TL;DR:** You can use it, modify it, share it, whatever.
+You are free to use, modify, and distribute this software.
 
-## 🙏 Credits
+## Support
 
-**Remember:** This is a community tool, consider supporting YoungLife's mission at [younglife.org](https://younglife.org)!
+This is a community tool for YoungLife volunteers. For issues or questions, please check the code or create an issue in the repository.
+
+Consider supporting YoungLife's mission at [younglife.org](https://younglife.org).

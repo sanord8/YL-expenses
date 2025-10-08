@@ -30,21 +30,17 @@ const translations = {
         total_receipts: "Total Receipts",
 
         add_expense: "Add Expense",
-        category: "Category",
-        cat_food: "🍽️ Food",
-        cat_transport: "🚗 Transport",
-        cat_accommodation: "🏠 Accommodation",
-        cat_materials: "📦 Materials",
-        cat_others: "➕ Others",
-        expense_type: "Expense Type",
-        type_general: "General Expense",
-        type_driving: "Driving",
         amount: "Amount (€)",
         kilometers: "Kilometers",
         km_rate: "Rate: 0.26€ per km",
         description: "Description",
+        reason: "Reason",
         date: "Date",
         add_expense_btn: "Add Expense",
+        km_tracking: "Kilometer Tracking",
+        add_km: "Add Kilometer Entry",
+        km_list: "Kilometer Expenses",
+        no_km_expenses: "No kilometer expenses added yet",
 
         duplicate_last: "Duplicate Last",
         clear_all: "Clear All",
@@ -83,7 +79,24 @@ const translations = {
 
         developed_by: "Developed by",
 
-        total: "Total:"
+        total: "Total:",
+
+        // Validation messages
+        validation_error: "Validation Error",
+        validation_amount: "Please enter a valid amount greater than 0.",
+        validation_description: "Please enter a description.",
+        validation_reason: "Please enter a reason for this expense.",
+        validation_reason_travel: "Please enter a reason for this travel.",
+        validation_date: "Please select a date.",
+        validation_km: "Please enter valid kilometers greater than 0.",
+        validation_profile: "Please complete your profile (Name and Area) before generating a PDF.",
+        validation_missing_receipts: "You must upload at least one receipt image before generating the PDF.",
+        validation_insufficient_receipts: "You have {expenses} expenses but only {receipts} receipts. Please upload a receipt for each expense.",
+        validation_extra_receipts: "You have {receipts} receipts but only {expenses} expenses. Do you want to continue?",
+        incomplete_profile: "Incomplete Profile",
+        missing_receipts: "Missing Receipts",
+        insufficient_receipts: "Insufficient Receipts",
+        extra_receipts: "Extra Receipts"
     },
     es: {
         password_title: "Introducir Contraseña",
@@ -107,21 +120,17 @@ const translations = {
         total_receipts: "Total de Recibos",
 
         add_expense: "Añadir Gasto",
-        category: "Categoría",
-        cat_food: "🍽️ Comida",
-        cat_transport: "🚗 Transporte",
-        cat_accommodation: "🏠 Alojamiento",
-        cat_materials: "📦 Materiales",
-        cat_others: "➕ Otros",
-        expense_type: "Tipo de Gasto",
-        type_general: "Gasto General",
-        type_driving: "Conducción",
         amount: "Cantidad (€)",
         kilometers: "Kilómetros",
         km_rate: "Tarifa: 0.26€ por km",
         description: "Descripción",
+        reason: "Motivo",
         date: "Fecha",
         add_expense_btn: "Añadir Gasto",
+        km_tracking: "Seguimiento de Kilómetros",
+        add_km: "Añadir Entrada de Kilómetros",
+        km_list: "Gastos de Kilómetros",
+        no_km_expenses: "No hay gastos de kilómetros añadidos todavía",
 
         duplicate_last: "Duplicar Último",
         clear_all: "Borrar Todo",
@@ -160,7 +169,24 @@ const translations = {
 
         developed_by: "Desarrollado por",
 
-        total: "Total:"
+        total: "Total:",
+
+        // Validation messages
+        validation_error: "Error de Validación",
+        validation_amount: "Por favor, ingresa una cantidad válida mayor a 0.",
+        validation_description: "Por favor, ingresa una descripción.",
+        validation_reason: "Por favor, ingresa un motivo para este gasto.",
+        validation_reason_travel: "Por favor, ingresa un motivo para este viaje.",
+        validation_date: "Por favor, selecciona una fecha.",
+        validation_km: "Por favor, ingresa kilómetros válidos mayores a 0.",
+        validation_profile: "Por favor, completa tu perfil (Nombre y Área) antes de generar el PDF.",
+        validation_missing_receipts: "Debes subir al menos una imagen de recibo antes de generar el PDF.",
+        validation_insufficient_receipts: "Tienes {expenses} gastos pero solo {receipts} recibos. Por favor, sube un recibo por cada gasto.",
+        validation_extra_receipts: "Tienes {receipts} recibos pero solo {expenses} gastos. ¿Deseas continuar?",
+        incomplete_profile: "Perfil Incompleto",
+        missing_receipts: "Recibos Faltantes",
+        insufficient_receipts: "Recibos Insuficientes",
+        extra_receipts: "Recibos Extra"
     },
     ca: {
         password_title: "Introduïu la Contrasenya",
@@ -184,21 +210,17 @@ const translations = {
         total_receipts: "Total de Rebuts",
 
         add_expense: "Afegir Despesa",
-        category: "Categoria",
-        cat_food: "🍽️ Menjar",
-        cat_transport: "🚗 Transport",
-        cat_accommodation: "🏠 Allotjament",
-        cat_materials: "📦 Materials",
-        cat_others: "➕ Altres",
-        expense_type: "Tipus de Despesa",
-        type_general: "Despesa General",
-        type_driving: "Conducció",
         amount: "Quantitat (€)",
         kilometers: "Quilòmetres",
         km_rate: "Tarifa: 0.26€ per km",
         description: "Descripció",
+        reason: "Motiu",
         date: "Data",
         add_expense_btn: "Afegir Despesa",
+        km_tracking: "Seguiment de Quilòmetres",
+        add_km: "Afegir Entrada de Quilòmetres",
+        km_list: "Despeses de Quilòmetres",
+        no_km_expenses: "No hi ha despeses de quilòmetres afegides encara",
 
         duplicate_last: "Duplicar Últim",
         clear_all: "Esborrar Tot",
@@ -237,7 +259,24 @@ const translations = {
 
         developed_by: "Desenvolupat per",
 
-        total: "Total:"
+        total: "Total:",
+
+        // Validation messages
+        validation_error: "Error de Validació",
+        validation_amount: "Si us plau, introdueix una quantitat vàlida major a 0.",
+        validation_description: "Si us plau, introdueix una descripció.",
+        validation_reason: "Si us plau, introdueix un motiu per aquesta despesa.",
+        validation_reason_travel: "Si us plau, introdueix un motiu per aquest viatge.",
+        validation_date: "Si us plau, selecciona una data.",
+        validation_km: "Si us plau, introdueix quilòmetres vàlids majors a 0.",
+        validation_profile: "Si us plau, completa el teu perfil (Nom i Àrea) abans de generar el PDF.",
+        validation_missing_receipts: "Has de pujar almenys una imatge de rebut abans de generar el PDF.",
+        validation_insufficient_receipts: "Tens {expenses} despeses però només {receipts} rebuts. Si us plau, puja un rebut per cada despesa.",
+        validation_extra_receipts: "Tens {receipts} rebuts però només {expenses} despeses. Vols continuar?",
+        incomplete_profile: "Perfil Incomplet",
+        missing_receipts: "Rebuts Faltants",
+        insufficient_receipts: "Rebuts Insuficients",
+        extra_receipts: "Rebuts Extra"
     }
 };
 
