@@ -1,12 +1,10 @@
-# YoungLife Expense Report Generator 💚
-
-Hey there! 👋
+# YoungLife Expense Report Generator
 
 This is a simple, free tool created for the amazing folks at **[YoungLife](https://younglife.org)** - a nonprofit organization dedicated to introducing adolescents to Jesus Christ and helping them grow in their faith.
 
 ## What is this?
 
-Ever had to submit expense reports after a YoungLife camp, mission trip, or event? Yeah, we know... collecting receipts, organizing everything, and creating a proper report can be a pain. That's why this tool exists!
+Ever had to submit expense reports after a YoungLife camp, mission trip, or event? collecting receipts, organizing everything, and creating a proper report can be a pain. That's why this tool exists!
 
 This is a **completely free, offline-capable web app** that helps YoungLife volunteers and staff create PDF expense reports in seconds. 
 
