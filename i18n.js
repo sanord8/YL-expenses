@@ -16,6 +16,8 @@ const translations = {
         profile_title: "User Profile",
         full_name: "Full Name",
         area: "Area",
+        iban: "IBAN",
+        iban_note: "For reimbursement purposes",
         save_profile: "Save Profile",
 
         app_title: "Expense Report Generator",
@@ -106,6 +108,8 @@ const translations = {
         profile_title: "Perfil de Usuario",
         full_name: "Nombre Completo",
         area: "Área",
+        iban: "IBAN",
+        iban_note: "Para reembolso",
         save_profile: "Guardar Perfil",
 
         app_title: "Generador de Informes de Gastos",
@@ -196,6 +200,8 @@ const translations = {
         profile_title: "Perfil d'Usuari",
         full_name: "Nom Complet",
         area: "Àrea",
+        iban: "IBAN",
+        iban_note: "Per a reemborsament",
         save_profile: "Desar Perfil",
 
         app_title: "Generador d'Informes de Despeses",
@@ -280,7 +286,7 @@ const translations = {
     }
 };
 
-let currentLanguage = localStorage.getItem('language') || 'en';
+let currentLanguage = localStorage.getItem('language') || 'es';
 
 /**
  * Sets the application language and updates all UI texts

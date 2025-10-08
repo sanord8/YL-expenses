@@ -18,7 +18,6 @@ This tool simplifies expense report submission for YoungLife camps, mission trip
 6. **Generate PDF**: Download your complete report
 
 
-
 ## Technical Details
 
 ### Tech Stack

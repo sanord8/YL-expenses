@@ -31,8 +31,8 @@ function generatePDF() {
 
     try {
         const logoUrl = 'https://cdn.brandfetch.io/iduNJ0NPLd/w/820/h/546/theme/dark/logo.png?c=1bxid64Mup7aczewSAYMX&t=1756789920804';
-        doc.addImage(logoUrl, 'PNG', 15, yPosition, 60, 20);
-        yPosition += 25;
+        doc.addImage(logoUrl, 'PNG', 15, yPosition, 70, 40);
+        yPosition += 40;
     } catch (error) {
         console.error('Error loading logo:', error);
         doc.setFontSize(24);
@@ -49,7 +49,7 @@ function generatePDF() {
     doc.setFontSize(22);
     doc.setFont(undefined, 'bold');
     doc.setTextColor(0, 58, 91);
-    doc.text('YoungLife Expense Report', 15, yPosition);
+    doc.text('Nota de Gastos YL - España', 15, yPosition);
     yPosition += 10;
 
     doc.setFontSize(11);
@@ -61,6 +61,10 @@ function generatePDF() {
     }
     if (userProfile.area) {
         doc.text(`Area: ${userProfile.area}`, 15, yPosition);
+        yPosition += 6;
+    }
+    if (userProfile.iban) {
+        doc.text(`IBAN: ${userProfile.iban}`, 15, yPosition);
         yPosition += 6;
     }
     doc.text(`Generated: ${new Date().toLocaleDateString()}`, 15, yPosition);
