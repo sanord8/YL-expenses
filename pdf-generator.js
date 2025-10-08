@@ -31,7 +31,7 @@ function generatePDF() {
 
     try {
         const logoUrl = 'https://cdn.brandfetch.io/iduNJ0NPLd/w/820/h/546/theme/dark/logo.png?c=1bxid64Mup7aczewSAYMX&t=1756789920804';
-        doc.addImage(logoUrl, 'PNG', 15, yPosition, 70, 40);
+        doc.addImage(logoUrl, 'PNG', 15, yPosition, 70, 35);
         yPosition += 40;
     } catch (error) {
         console.error('Error loading logo:', error);
