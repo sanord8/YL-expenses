@@ -85,6 +85,75 @@ const cameraError = document.getElementById('cameraError');
 
 let currentStream = null;
 let capturedPhotoData = null;
+let hasUnprocessedReceipt = false;
+
+/**
+ * Unlocks expense form fields after receipt upload
+ */
+function unlockExpenseFields() {
+    const fields = [amount, description, reason, dateInput];
+    const submitBtn = expenseForm.querySelector('button[type="submit"]');
+    const prompt = document.getElementById('receiptPrompt');
+
+    fields.forEach(field => {
+        field.disabled = false;
+        field.classList.remove('opacity-50');
+    });
+
+    submitBtn.disabled = false;
+    if (prompt) prompt.classList.add('hidden');
+}
+
+/**
+ * Locks expense form fields until receipt is uploaded
+ */
+function lockExpenseFields() {
+    const fields = [amount, description, reason, dateInput];
+    const submitBtn = expenseForm.querySelector('button[type="submit"]');
+    const prompt = document.getElementById('receiptPrompt');
+
+    fields.forEach(field => {
+        field.disabled = true;
+        field.classList.add('opacity-50');
+    });
+
+    submitBtn.disabled = true;
+    if (prompt) prompt.classList.remove('hidden');
+}
+
+/**
+ * Unlocks KM form fields after receipt upload
+ */
+function unlockKmFields() {
+    const fields = [kmAmount, kmDescription, kmReason, kmDate];
+    const submitBtn = kmForm.querySelector('button[type="submit"]');
+    const prompt = document.getElementById('kmReceiptPrompt');
+
+    fields.forEach(field => {
+        field.disabled = false;
+        field.classList.remove('opacity-50');
+    });
+
+    submitBtn.disabled = false;
+    if (prompt) prompt.classList.add('hidden');
+}
+
+/**
+ * Locks KM form fields until receipt is uploaded
+ */
+function lockKmFields() {
+    const fields = [kmAmount, kmDescription, kmReason, kmDate];
+    const submitBtn = kmForm.querySelector('button[type="submit"]');
+    const prompt = document.getElementById('kmReceiptPrompt');
+
+    fields.forEach(field => {
+        field.disabled = true;
+        field.classList.add('opacity-50');
+    });
+
+    submitBtn.disabled = true;
+    if (prompt) prompt.classList.remove('hidden');
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     passwordModal.classList.remove('hidden');
@@ -233,6 +302,10 @@ expenseForm.addEventListener('submit', (e) => {
     showToast(t('add_expense_btn') + ' ✓', 'success');
     expenseForm.reset();
 
+    // Lock fields again after adding expense
+    lockExpenseFields();
+    hasUnprocessedReceipt = false;
+
     flatpickr(dateInput, {
         dateFormat: 'Y-m-d',
         defaultDate: new Date(),
@@ -295,6 +368,10 @@ kmForm.addEventListener('submit', (e) => {
     updateProgressSteps();
     showToast(t('add_km') + ' ✓', 'success');
     kmForm.reset();
+
+    // Lock fields again after adding KM expense
+    lockKmFields();
+    hasUnprocessedReceipt = false;
 
     flatpickr(kmDate, {
         dateFormat: 'Y-m-d',
@@ -436,6 +513,11 @@ function handleFiles(files) {
             renderReceipts();
             updateSummary();
             updateProgressSteps();
+
+            // Unlock both expense forms after uploading a receipt
+            unlockExpenseFields();
+            unlockKmFields();
+            hasUnprocessedReceipt = true;
         };
         reader.readAsDataURL(file);
     });
@@ -455,6 +537,12 @@ function deleteReceipt(index) {
     receipts.splice(index, 1);
     renderReceipts();
     updateProgressSteps();
+
+    // If no receipts left and no unprocessed receipt, lock all fields
+    if (receipts.length === 0 && !hasUnprocessedReceipt) {
+        lockExpenseFields();
+        lockKmFields();
+    }
 }
 
 function updateProgressSteps() {
@@ -729,6 +817,11 @@ usePhotoBtn.addEventListener('click', () => {
         renderReceipts();
         updateProgressSteps();
 
+        // Unlock both expense forms after taking a photo
+        unlockExpenseFields();
+        unlockKmFields();
+        hasUnprocessedReceipt = true;
+
         cameraModal.classList.add('hidden');
         capturedPhotoData = null;
     }
@@ -754,12 +847,14 @@ generatePDFBtn.addEventListener('click', async () => {
         return;
     }
 
-    // Strict validation: require exactly one receipt per expense
-    const totalExpenses = expenses.length + kmExpenses.length;
+    // Check if there are receipts
     if (receipts.length === 0) {
         showCustomAlert('error', t('missing_receipts'), t('validation_missing_receipts'));
         return;
     }
+
+    // New workflow: each expense should have a receipt, but we're flexible
+    const totalExpenses = expenses.length + kmExpenses.length;
 
     if (receipts.length < totalExpenses) {
         showCustomAlert('error', t('insufficient_receipts'), t('validation_insufficient_receipts', {

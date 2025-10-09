@@ -61,6 +61,7 @@ const translations = {
         edit: "Edit",
         delete: "Delete",
 
+        receipt_first: "📸 Please upload a receipt first to add an expense",
         upload_receipts: "Upload Receipts",
         receipts_count: "Receipts uploaded:",
         drag_drop: "Drag & drop images here",
@@ -153,6 +154,7 @@ const translations = {
         edit: "Editar",
         delete: "Eliminar",
 
+        receipt_first: "📸 Por favor, sube un recibo primero para añadir un gasto",
         upload_receipts: "Subir Recibos",
         receipts_count: "Recibos subidos:",
         drag_drop: "Arrastra y suelta imágenes aquí",
@@ -245,6 +247,7 @@ const translations = {
         edit: "Editar",
         delete: "Eliminar",
 
+        receipt_first: "📸 Si us plau, puja un rebut primer per afegir una despesa",
         upload_receipts: "Pujar Rebuts",
         receipts_count: "Rebuts pujats:",
         drag_drop: "Arrossega i deixa anar imatges aquí",
