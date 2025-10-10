@@ -20,6 +20,7 @@ async function hashPassword(password) {
 let expenses = [];
 let kmExpenses = [];
 let receipts = [];
+let pdfReceipts = [];
 let userProfile = {
     name: '',
     area: '',
@@ -121,39 +122,6 @@ function lockExpenseFields() {
     if (prompt) prompt.classList.remove('hidden');
 }
 
-/**
- * Unlocks KM form fields after receipt upload
- */
-function unlockKmFields() {
-    const fields = [kmAmount, kmDescription, kmReason, kmDate];
-    const submitBtn = kmForm.querySelector('button[type="submit"]');
-    const prompt = document.getElementById('kmReceiptPrompt');
-
-    fields.forEach(field => {
-        field.disabled = false;
-        field.classList.remove('opacity-50');
-    });
-
-    submitBtn.disabled = false;
-    if (prompt) prompt.classList.add('hidden');
-}
-
-/**
- * Locks KM form fields until receipt is uploaded
- */
-function lockKmFields() {
-    const fields = [kmAmount, kmDescription, kmReason, kmDate];
-    const submitBtn = kmForm.querySelector('button[type="submit"]');
-    const prompt = document.getElementById('kmReceiptPrompt');
-
-    fields.forEach(field => {
-        field.disabled = true;
-        field.classList.add('opacity-50');
-    });
-
-    submitBtn.disabled = true;
-    if (prompt) prompt.classList.remove('hidden');
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     passwordModal.classList.remove('hidden');
@@ -369,10 +337,6 @@ kmForm.addEventListener('submit', (e) => {
     showToast(t('add_km') + ' ✓', 'success');
     kmForm.reset();
 
-    // Lock fields again after adding KM expense
-    lockKmFields();
-    hasUnprocessedReceipt = false;
-
     flatpickr(kmDate, {
         dateFormat: 'Y-m-d',
         defaultDate: new Date(),
@@ -403,8 +367,7 @@ function renderExpenses() {
         <div class="expense-item" data-id="${expense.id}">
             <div class="expense-item-header">
                 <div>
-                    <span class="text-sm font-semibold text-yl-blue">[${expense.department}]</span>
-                    <span class="expense-date ml-2">${new Date(expense.date).toLocaleDateString()}</span>
+                    <span class="expense-date">${new Date(expense.date).toLocaleDateString()}</span>
                 </div>
                 <span class="expense-amount">${expense.amount}€</span>
             </div>
@@ -487,7 +450,9 @@ dropZone.addEventListener('dragleave', () => {
 dropZone.addEventListener('drop', (e) => {
     e.preventDefault();
     dropZone.classList.remove('drag-over');
-    const files = Array.from(e.dataTransfer.files).filter(file => file.type.startsWith('image/'));
+    const files = Array.from(e.dataTransfer.files).filter(file =>
+        file.type.startsWith('image/') || file.type === 'application/pdf'
+    );
     handleFiles(files);
 });
 
@@ -497,7 +462,7 @@ receiptUpload.addEventListener('change', (e) => {
 });
 
 /**
- * Processes uploaded image files and adds them to the receipts array
+ * Processes uploaded image and PDF files
  * @author Santiago
  * @description Converts uploaded files to base64 data URLs for storage and PDF generation
  * @param {File[]} files - Array of File objects to process
@@ -509,14 +474,17 @@ function handleFiles(files) {
     files.forEach(file => {
         const reader = new FileReader();
         reader.onload = (event) => {
-            receipts.push(event.target.result);
+            if (file.type === 'application/pdf') {
+                pdfReceipts.push(event.target.result);
+            } else {
+                receipts.push(event.target.result);
+            }
             renderReceipts();
             updateSummary();
             updateProgressSteps();
 
-            // Unlock both expense forms after uploading a receipt
+            // Unlock expense form after uploading a receipt
             unlockExpenseFields();
-            unlockKmFields();
             hasUnprocessedReceipt = true;
         };
         reader.readAsDataURL(file);
@@ -524,24 +492,36 @@ function handleFiles(files) {
 }
 
 function renderReceipts() {
-    receiptPreview.innerHTML = receipts.map((receipt, index) => `
+    const imageItems = receipts.map((receipt, index) => `
         <div class="receipt-item">
             <img src="${receipt}" alt="Receipt ${index + 1}">
-            <button class="delete-receipt" onclick="deleteReceipt(${index})">×</button>
+            <button class="delete-receipt" onclick="deleteReceipt(${index}, 'image')">×</button>
         </div>
-    `).join('');
-    receiptCount.textContent = receipts.length;
+    `);
+
+    const pdfItems = pdfReceipts.map((pdf, index) => `
+        <div class="receipt-item">
+            <div class="pdf-preview">📄 PDF ${index + 1}</div>
+            <button class="delete-receipt" onclick="deleteReceipt(${index}, 'pdf')">×</button>
+        </div>
+    `);
+
+    receiptPreview.innerHTML = [...imageItems, ...pdfItems].join('');
+    receiptCount.textContent = receipts.length + pdfReceipts.length;
 }
 
-function deleteReceipt(index) {
-    receipts.splice(index, 1);
+function deleteReceipt(index, type) {
+    if (type === 'pdf') {
+        pdfReceipts.splice(index, 1);
+    } else {
+        receipts.splice(index, 1);
+    }
     renderReceipts();
     updateProgressSteps();
 
-    // If no receipts left and no unprocessed receipt, lock all fields
-    if (receipts.length === 0 && !hasUnprocessedReceipt) {
+    // If no receipts left and no unprocessed receipt, lock expense fields
+    if (receipts.length === 0 && pdfReceipts.length === 0 && !hasUnprocessedReceipt) {
         lockExpenseFields();
-        lockKmFields();
     }
 }
 
@@ -562,7 +542,9 @@ function updateProgressSteps() {
         line1.classList.remove('border-yl-green');
     }
 
-    if (receipts.length > 0) {
+    const totalReceipts = receipts.length + pdfReceipts.length;
+
+    if (totalReceipts > 0) {
         step2.classList.add('active');
         line2.classList.remove('border-gray-300');
         line2.classList.add('border-yl-green');
@@ -572,7 +554,7 @@ function updateProgressSteps() {
         line2.classList.remove('border-yl-green');
     }
 
-    if (expenses.length > 0 && receipts.length > 0) {
+    if (expenses.length > 0 && totalReceipts > 0) {
         step3.classList.add('active');
     } else {
         step3.classList.remove('active');
@@ -635,6 +617,7 @@ clearAllBtn.addEventListener('click', async () => {
         expenses = [];
         kmExpenses = [];
         receipts = [];
+        pdfReceipts = [];
         renderExpenses();
         renderKmExpenses();
         renderReceipts();
@@ -661,7 +644,7 @@ yesterdayBtn.addEventListener('click', () => {
 });
 
 exportDataBtn.addEventListener('click', () => {
-    if (expenses.length === 0 && kmExpenses.length === 0 && receipts.length === 0) {
+    if (expenses.length === 0 && kmExpenses.length === 0 && receipts.length === 0 && pdfReceipts.length === 0) {
         showToast(t('no_data_export'), 'error');
         return;
     }
@@ -672,7 +655,8 @@ exportDataBtn.addEventListener('click', () => {
         userProfile,
         expenses,
         kmExpenses,
-        receipts
+        receipts,
+        pdfReceipts
     };
 
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -715,6 +699,10 @@ importFileInput.addEventListener('change', (e) => {
 
             if (data.receipts) {
                 receipts = data.receipts;
+            }
+
+            if (data.pdfReceipts) {
+                pdfReceipts = data.pdfReceipts;
             }
 
             renderExpenses();
@@ -847,30 +835,31 @@ generatePDFBtn.addEventListener('click', async () => {
         return;
     }
 
-    // Check if there are receipts
-    if (receipts.length === 0) {
+    // Check if there are receipts (only for general expenses, not KM)
+    const totalReceipts = receipts.length + pdfReceipts.length;
+
+    // Only general expenses require receipts, KM expenses don't
+    if (expenses.length > 0 && totalReceipts === 0) {
         showCustomAlert('error', t('missing_receipts'), t('validation_missing_receipts'));
         return;
     }
 
-    // New workflow: each expense should have a receipt, but we're flexible
-    const totalExpenses = expenses.length + kmExpenses.length;
-
-    if (receipts.length < totalExpenses) {
+    // Validate: each general expense should have a receipt
+    if (totalReceipts < expenses.length) {
         showCustomAlert('error', t('insufficient_receipts'), t('validation_insufficient_receipts', {
-            expenses: totalExpenses,
-            receipts: receipts.length
+            expenses: expenses.length,
+            receipts: totalReceipts
         }));
         return;
     }
 
-    if (receipts.length > totalExpenses) {
+    if (totalReceipts > expenses.length) {
         const confirmed = await showCustomConfirm(
             'warning',
             t('extra_receipts'),
             t('validation_extra_receipts', {
-                receipts: receipts.length,
-                expenses: totalExpenses
+                receipts: totalReceipts,
+                expenses: expenses.length
             })
         );
         if (!confirmed) return;

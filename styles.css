@@ -186,6 +186,17 @@
     object-fit: cover;
 }
 
+.pdf-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: bold;
+    font-size: 1.25rem;
+}
+
 .delete-receipt {
     position: absolute;
     top: 0.5rem;

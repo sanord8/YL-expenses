@@ -15,7 +15,7 @@
  * @example
  * generatePDF();
  */
-function generatePDF() {
+async function generatePDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
@@ -343,17 +343,42 @@ function generatePDF() {
             doc.setTextColor(81, 81, 81);
 
             try {
-                const imgWidth = 170;
-                const imgHeight = 100;
+                // Create an image to get actual dimensions
+                const img = new Image();
+                img.src = receipt;
+
+                // Calculate aspect ratio-preserving dimensions
+                const maxWidth = 170;
+                const maxHeight = 100;
+                let imgWidth, imgHeight;
+
+                if (img.width && img.height) {
+                    const aspectRatio = img.width / img.height;
+
+                    if (aspectRatio > maxWidth / maxHeight) {
+                        imgWidth = maxWidth;
+                        imgHeight = maxWidth / aspectRatio;
+                    } else {
+                        imgHeight = maxHeight;
+                        imgWidth = maxHeight * aspectRatio;
+                    }
+                } else {
+                    imgWidth = maxWidth;
+                    imgHeight = maxHeight;
+                }
+
+                // Center the image in the available space
+                const xOffset = 20 + (maxWidth - imgWidth) / 2;
+                const yOffset = yPosition + (maxHeight - imgHeight) / 2;
 
                 doc.setDrawColor(0, 58, 91);
                 doc.setLineWidth(0.5);
-                doc.rect(20, yPosition, imgWidth, imgHeight, 'S');
+                doc.rect(20, yPosition, maxWidth, maxHeight, 'S');
 
-                doc.addImage(receipt, 'JPEG', 20, yPosition, imgWidth, imgHeight);
+                doc.addImage(receipt, 'JPEG', xOffset, yOffset, imgWidth, imgHeight);
 
                 if (isFirstOnPage) {
-                    yPosition += imgHeight + 15;
+                    yPosition += maxHeight + 15;
                 }
             } catch (error) {
                 console.error('Error adding receipt image:', error);
@@ -373,5 +398,48 @@ function generatePDF() {
         doc.text(`Generated with YoungLife Expense Generator v2.3 - Page ${i} of ${pageCount}`, 15, 285);
     }
 
-    doc.save(filename);
+    // If there are PDF receipts, merge them
+    if (pdfReceipts.length > 0) {
+        const { PDFDocument } = PDFLib;
+
+        // Save the current PDF as bytes
+        const pdfBytes = doc.output('arraybuffer');
+
+        // Load the main PDF
+        const mainPdf = await PDFDocument.load(pdfBytes);
+
+        // Merge each uploaded PDF
+        for (const pdfReceipt of pdfReceipts) {
+            try {
+                // Convert data URL to array buffer
+                const base64Data = pdfReceipt.split(',')[1];
+                const binaryString = atob(base64Data);
+                const bytes = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+
+                // Load the uploaded PDF
+                const uploadedPdf = await PDFDocument.load(bytes);
+
+                // Copy all pages from uploaded PDF
+                const copiedPages = await mainPdf.copyPages(uploadedPdf, uploadedPdf.getPageIndices());
+                copiedPages.forEach(page => mainPdf.addPage(page));
+            } catch (error) {
+                console.error('Error merging PDF:', error);
+            }
+        }
+
+        // Save the merged PDF
+        const mergedPdfBytes = await mainPdf.save();
+        const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+    } else {
+        doc.save(filename);
+    }
 }
